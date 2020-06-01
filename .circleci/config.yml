@@ -12,7 +12,7 @@ jobs:
         environment:
           POSTGRES_USER: admin
           POSTGRES_DB: app
-          POSTGRES_PASSWORD=Gourav@1996
+          POSTGRES_PASSWORD: Gourav@1996
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
