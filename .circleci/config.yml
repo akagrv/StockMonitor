@@ -1,48 +1,29 @@
 version: 2.1
 
+orbs:
+  python: circleci/python@0.3.0
+
 jobs:
-  build-and-test:
-    working_directory: ~/stockmonitor/app
-    docker:
-      - image: circleci/python:3.8
-        environment:
-          PIPENV_VENV_IN_PROJECT: true
-          DATABASE_URL: postgresql://admin@localhost/app?sslmode=disable
-      - image: circleci/postgres:9.6
-        environment:
-          POSTGRES_USER: admin
-          POSTGRES_DB: app
-          POSTGRES_PASSWORD: Gourav@1996
+  build and test:
+    executor: python/default
     steps:
-      - checkout:
-          path: ~/stockmonitor
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.8/site-packages
-      - restore_cache:
-          keys:
-            - deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-            - deps10-{{ .Branch }}
-            - deps10
+      - checkout
+      - python/load-cache
       - run:
-          command: |
-            sudo pip install pipenv
-            pipenv install
-      - save_cache:
-          key: deps10-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-          paths:
-            - ".venv"
-            - "/usr/local/bin"
-            - "/usr/local/lib/python3.8/site-packages"
+          name: Installing docker-compose
+          command: pip install docker-compose
+      - python/save-cache
+      # setup_remote_docker key is only required when the primary executor is a docker container
+      # for machines -we do not need to use the setup_remote_docker key
+      - setup_remote_docker
       - run:
+          name: Build container and run app tests
           command: |
-            pipenv run python manage.py test
+            docker-compose -f docker-compose.circleci.yml run app sh -c "python manage.py test && flake8"
       - store_test_results:
           path: test-results
-      - store_artifacts:
-          path: test-results
-          destination: tr1
 
 workflows:
   main:
     jobs:
-      - build-and-test
+      - build and test
