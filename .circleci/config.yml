@@ -6,6 +6,7 @@ orbs:
 jobs:
   build and test:
     executor: python/default
+    working_directory: ~stockmonitor
     steps:
       - checkout
       - python/load-cache
@@ -18,10 +19,11 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build container and run app tests
+          # removed flake8 from command for now
           command: |
-            docker-compose -f docker-compose.circleci.yml run app sh -c "python manage.py test && flake8"
+            docker-compose -f docker-compose.circleci.yml run app sh -c "python manage.py test"
       - store_test_results:
-          path: test-results
+          path: ./app/test-results
 
 workflows:
   main:
