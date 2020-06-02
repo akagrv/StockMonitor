@@ -6,7 +6,6 @@ orbs:
 jobs:
   build and test:
     executor: python/default
-    working_directory: ~stockmonitor
     steps:
       - checkout
       - python/load-cache
@@ -23,7 +22,7 @@ jobs:
           command: |
             docker-compose -f docker-compose.circleci.yml run app sh -c "python manage.py test"
       - store_test_results:
-          path: ./app/test-results
+          path: app/test-results/
 
 workflows:
   main:
