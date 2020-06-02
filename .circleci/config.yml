@@ -15,7 +15,7 @@ jobs:
       - python/save-cache
       # setup_remote_docker key is only required when the primary executor is a docker container
       # for machines -we do not need to use the setup_remote_docker key
-      # - setup_remote_docker
+      - setup_remote_docker
       - run:
           name: Build container and run app tests
           # removed flake8 from command for now
