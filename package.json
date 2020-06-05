@@ -4,7 +4,7 @@
   "description": "Developing a webapp using Django Rest framework and React to monitor and set alerts for stocks based on various triggers.",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development ./app/frontend/src/index.js --output ./app/frontend/static/frontend/main.js",
+    "dev": "webpack --mode development --watch ./app/frontend/src/index.js --output ./app/frontend/static/frontend/main.js",
     "build": "webpack --mode production ./app/frontend/src/index.js --output ./app/frontend/static/frontend/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,6 +30,10 @@
   "dependencies": {
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
   }
 }
