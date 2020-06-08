@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { registerUser } from "../../actions/auth";
+import PropTypes from "prop-types";
 
 export class Register extends Component {
   state = {
@@ -9,9 +12,18 @@ export class Register extends Component {
     password2: "",
   };
 
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    registerUser: PropTypes.func.isRequired,
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
+    this.props.registerUser(
+      this.state.username,
+      this.state.email,
+      this.state.password
+    );
   };
 
   onChange = (e) => {
@@ -19,6 +31,9 @@ export class Register extends Component {
   };
 
   render() {
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/" />;
+    }
     const { username, email, password, password2 } = this.state;
     return (
       <div className="col-md-6 m-auto">
@@ -80,4 +95,8 @@ export class Register extends Component {
   }
 }
 
-export default Register;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { registerUser })(Register);
