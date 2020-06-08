@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from core.models import StockWatchList
+from core.models import WatchList
 
 
-class StockWatchListSerializer(serializers.ModelSerializer):
+class WatchListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = StockWatchList
+        model = WatchList
         fields = '__all__'

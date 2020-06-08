@@ -1,4 +1,4 @@
 from django.contrib import admin
-from core.models import StockWatchList
+from core.models import WatchList
 
-admin.site.register(StockWatchList)
+admin.site.register(WatchList)
