@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { loginUser } from "../../actions/auth";
 
 export class Login extends Component {
   state = {
@@ -7,9 +10,15 @@ export class Login extends Component {
     password: "",
   };
 
+  // the action and the state properties we are using
+  static propTypes = {
+    loginUser: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
+    this.props.loginUser(this.state.username, this.state.password);
   };
 
   onChange = (e) => {
@@ -17,6 +26,9 @@ export class Login extends Component {
   };
 
   render() {
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/" />;
+    }
     const { username, password } = this.state;
     return (
       <div className="col-md-6 m-auto">
@@ -58,4 +70,9 @@ export class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+// 2nd param is the action we want to use
+export default connect(mapStateToProps, { loginUser })(Login);
