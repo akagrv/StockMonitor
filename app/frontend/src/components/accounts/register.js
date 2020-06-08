@@ -20,6 +20,7 @@ export class Register extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     // check if password == password2
+    // TBD
     this.props.registerUser(
       this.state.username,
       this.state.email,
