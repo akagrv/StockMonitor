@@ -25,7 +25,7 @@ SECRET_KEY = 'bgu670s5mv-s$6&6gyr6aw_-ir694u8#ydo+i*b+cv&m&4g^fx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1',
+ALLOWED_HOSTS = ['*', 'http://18.237.95.90/', 'localhost', '127.0.0.1',
                  'django-react-playground-app.herokuapp.com']
 
 
