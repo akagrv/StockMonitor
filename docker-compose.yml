@@ -4,20 +4,16 @@ services:
   app:
     build:
       context: .
+      args:
+        # db host field value should be the same as the db service name
+        - DB_HOST_ARG=db
+        - DB_NAME_ARG=app
+        - DB_USER_ARG=admin
+        - DB_PASS_ARG=Gourav@1996
     ports:
       - "8000:8000"
     volumes:
       - ./app:/app
-    command: >
-      sh -c "python manage.py wait_for_db &&
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
-    environment:
-      # db host field value should be the same as the db service name
-      - DB_HOST=db
-      - DB_NAME=app
-      - DB_USER=admin
-      - DB_PASS=Gourav@1996
     depends_on:
       - db
 

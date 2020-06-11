@@ -44,6 +44,11 @@ ARG DB_NAME_ARG
 ARG DB_USER_ARG
 ARG DB_PASS_ARG
 
+#ENV DB_HOST=test_host
+#ENV DB_NAME=test_name
+#ENV DB_USER=test_user
+#ENV DB_PASS=test_pass
+
 ENV DB_HOST=$DB_HOST_ARG
 ENV DB_NAME=$DB_NAME_ARG
 ENV DB_USER=$DB_USER_ARG
@@ -54,13 +59,16 @@ ENV DB_PASS=$DB_PASS_ARG
 #USER user
 
 #otherwise, for ubuntu
-RUN useradd -m user
-USER user
+#RUN useradd -m user
+#USER user
 
-#CMD python manage.py wait_for_db && \
-#    python manage.py migrate && \
-#    python manage.py runserver
+EXPOSE 8000
+CMD python manage.py collectstatic --noinput && \
+    python manage.py wait_for_db && \
+    python manage.py migrate && \
+    gunicorn app.wsgi:application --bind 0.0.0.0:8000
 
 # heroku randomly assigns $PORT env variable
-EXPOSE 8000
-CMD gunicorn app.wsgi:application --bind 0.0.0.0:8000
+#EXPOSE 8000
+#RUN python manage.py collectstatic --noinput
+#CMD gunicorn app.wsgi

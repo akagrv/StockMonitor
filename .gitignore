@@ -1,6 +1,7 @@
 # React
 node_modules
 **/static/frontend/main.js
+**/app/staticfiles
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
