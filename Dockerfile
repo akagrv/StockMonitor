@@ -39,15 +39,15 @@ RUN npm run build
 
 WORKDIR /app
 
-#ARG DB_HOST
-#ARG DB_NAME
-#ARG DB_USER
-#ARG DB_PASS
+ARG DB_HOST_ARG
+ARG DB_NAME_ARG
+ARG DB_USER_ARG
+ARG DB_PASS_ARG
 
-ENV DB_HOST=ec2-52-44-55-63.compute-1.amazonaws.com
-ENV DB_NAME=d3bauldf0g77ti
-ENV DB_USER=orrnjvxnmkxvav
-ENV DB_PASS=4966ef3148846d808556cf066aabad1eda1d4de4e1ff9fd0a45b84e9788d96eb
+ENV DB_HOST=$DB_HOST_ARG
+ENV DB_NAME=$DB_NAME_ARG
+ENV DB_USER=$DB_USER_ARG
+ENV DB_PASS=$DB_PASS_ARG
 
 # use this for apline
 #RUN adduser -D user
@@ -62,4 +62,5 @@ USER user
 #    python manage.py runserver
 
 # heroku randomly assigns $PORT env variable
-CMD gunicorn app.wsgi:application --bind 0.0.0.0:$PORT
+EXPOSE 8000
+CMD gunicorn app.wsgi:application --bind 0.0.0.0:8000
