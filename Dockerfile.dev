@@ -1,0 +1,40 @@
+# base image
+FROM nikolaik/python-nodejs:python3.8-nodejs12
+
+# set environment variables
+ENV DEBUG 0
+# Prevents Python from writing pyc files to disc
+ENV PYTHONDONTWRITEBYTECODE 1
+# Prevents Python from buffering stdout and stderr
+ENV PYTHONUNBUFFERED 1
+
+# install node
+#RUN apt-get update \
+#    && apt-get install nodejs -y
+
+# Install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt /requirements.txt
+# apk is the package manager which comes in installed with python alpine
+# RUN apk add --update --no-cache postgresql-client
+# virtual keyword is used to set an alias for our dependency
+# RUN apk add --update --no-cache --virtual .tmp-build-deps \
+#    gcc libc-dev linux-headers postgresql-dev
+RUN pip install -r /requirements.txt
+# RUN apk del .tmp-build-deps
+
+# Install Front-end dependencies
+COPY ./package.json /package.json
+RUN npm install
+
+# Setup directory structure
+RUN mkdir /app
+WORKDIR /app
+COPY ./app/ /app
+
+# build static files
+WORKDIR /
+COPY ./webpack.config.js ./.babelrc /
+RUN npm run build
+
+WORKDIR /app
