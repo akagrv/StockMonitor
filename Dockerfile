@@ -64,8 +64,6 @@ ENV DB_PASS=$DB_PASS_ARG
 
 EXPOSE 8000
 CMD python manage.py collectstatic --noinput && \
-    python manage.py wait_for_db && \
-    python manage.py migrate && \
     gunicorn app.wsgi:application --bind 0.0.0.0:8000
 
 # heroku randomly assigns $PORT env variable
