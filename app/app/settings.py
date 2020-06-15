@@ -20,13 +20,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'bgu670s5mv-s$6&6gyr6aw_-ir694u8#ydo+i*b+cv&m&4g^fx'
+# SECRET_KEY = 'bgu670s5mv-s$6&6gyr6aw_-ir694u8#ydo+i*b+cv&m&4g^fx'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'defaultsecretkey')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
-ALLOWED_HOSTS = ['*', 'http://18.237.95.90/', 'localhost', '127.0.0.1',
-                 'django-react-playground-app.herokuapp.com']
+ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 
 
 # Application definition
@@ -52,7 +55,6 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -132,7 +134,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 # The URL to use when referring to static files (where they will be served from)
-STATIC_URL = '/static/'
+STATIC_URL = '/static/static/'
+MEDIA_URL = '/static/media/'
 
 # Custom settings
 TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
@@ -140,6 +143,9 @@ TEST_OUTPUT_DIR = 'app/test-results'
 TEST_OUTPUT_FILE_NAME = 'test-results.xml'
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Simplified static file serving - reduces size of the static files when they are served
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATIC_ROOT = '/vol/web/static'
+MEDIA_ROOT = '/vol/web/media'
